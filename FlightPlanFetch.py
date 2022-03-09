@@ -1,9 +1,5 @@
-import json, urllib.request,  os
+import json, urllib.request
 import PySimpleGUI as sg
-
-
-clear = lambda: os.system('cls')
-clear()
 
 class SIMBRIEF(object):
     def __init__(self,username):
@@ -38,7 +34,10 @@ class SIMBRIEF(object):
     def get_fpData(self):
         return self.fpData
 
-    def set_brief(self):
+    def generate_brief(self)->None:
+        '''Generates and sets the briefing information'''
+
+        #Creates smaller Dicts for localised data
         general = self.get_flightPlan_key('general')
         aircraft = self.get_flightPlan_key('aircraft')
         origin = self.get_flightPlan_key('origin')
@@ -132,10 +131,11 @@ while True:
         break
 
     try:
+        #Initiate Class
         FlightPlan = SIMBRIEF(values['-INPUT-'])
         FlightPlan.fetchFlightPlan()
-        FlightPlan.set_brief()
-
+        FlightPlan.generate_brief()
+        #Populate Text Boxes Once Connected
         window['-StatusLabel-'].update(f'Connection:',text_color='white')
         
         window['-Status-'].update("CONNECTED",text_color='green')
